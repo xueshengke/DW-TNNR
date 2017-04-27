@@ -1,0 +1,6 @@
+# ignore files except *.fig or *.m
+
+*.m~
+*.asv
+
+/result
