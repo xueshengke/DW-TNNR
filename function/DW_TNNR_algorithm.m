@@ -36,8 +36,8 @@ rho      = para.rho;
 % W2_inc = weight_matrix(m, para.L, para.theta2);  % weight in ascent order
 % W2_sort = weight_sort(known, W2_inc);            % weight sorted
 
-[W1_r, W1_c] = weight_exp(known, para.theta1);
-[W2_r, W2_c] = weight_exp(known, para.theta2);
+[W_row, W_col] = weight_exp(known, para.theta1, para.theta2);
+% [W2_r, W2_c] = weight_exp(known, para.theta2);
 
 Erec = zeros(max_R, 1);  % reconstruction error, best value in each rank
 Psnr = zeros(max_R, 1);  % PSNR, best value in each rank
@@ -74,15 +74,15 @@ for R = min_R : max_R    % test if each rank is proper for completion
         for i = 1 : max_iter
             fprintf('iter %d, ', i);
             [U, sigma, V] = svd(X);
-            A = U'; B = V';
-            C = U(:, 1:R)'; D = V(:, 1:R)'; 
-            T1 = U(:, R+1:m); T2 = V(:, R+1:m);            
+%             A = U'; B = V';
+%             C = U(:, 1:R)'; D = V(:, 1:R)'; 
+            T1 = U(:, R+1:m)'; T2 = V(:, R+1:m)';            
 %             [m, n] = size(X);
 %             D_t = W1_r * T1 * T2'* W1_c;
 %             D_x = W1_r*A'*B*W1_c - W2_r*C'*D*W2_c;
 %             err = sum(D_t(:) - D_x(:));
             
-            X = X - 1/alpha * W1_r * T1 * T2'* W1_c;
+            X = X - 1/alpha * W_row * T1' * T2 * W_col;
 %             X = X - 1/alpha * (W1_r*A'*B*W1_c - W2_r*C'*D*W2_c);
             X = X .* missing + M .* known;
             

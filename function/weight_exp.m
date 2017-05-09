@@ -1,4 +1,4 @@
-function [ W_row, W_col ] = weight_exp(mask, theta)
+function [ W_row, W_col ] = weight_exp(known, theta1, theta2)
 %--------------------------------------------------------------------------
 % Xue Shengke, Zhejiang University, April 2017.
 % Contact information: see readme.txt.
@@ -16,15 +16,25 @@ function [ W_row, W_col ] = weight_exp(mask, theta)
 %         W_sort             --- sorted weight matrix
 %--------------------------------------------------------------------------
 
-[m, n] = size(mask);
-row_known = sum(mask, 2);
-col_known = transpose(sum(mask, 1));
+[m, n] = size(known);
+row_known = sum(known, 2);
+col_known = transpose(sum(known, 1));
 
-w_r = exp( -theta * (row_known / m - 1) );
-w_c = exp( -theta * (col_known / n - 1) );
+% w_r = exp( -theta1 * (row_known / n - 1) ) ;
+% w_c = exp( -theta2 * (col_known / m - 1) ) ;
+
+w_r = exp( -theta1 * (row_known / n - 1) ) - 1;
+w_c = exp( -theta2 * (col_known / m - 1) ) - 1;
 
 % w_r(:) = ones(size(w_r));
 % w_c(:) = ones(size(w_c));
+
+if theta1 == 0
+    w_r = ones(size(w_r));
+end
+if theta2 == 0
+    w_c = ones(size(w_c));
+end
 
 W_row = diag(w_r);
 W_col = diag(w_c);
@@ -42,6 +52,7 @@ W_col = diag(w_c);
 
 X = ones(m, n);
 Y = W_row * X * W_col;
+Y = Y .* (ones(m,n) - known);
 figure; imagesc(Y); colorbar;
 
 end
