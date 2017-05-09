@@ -112,7 +112,7 @@ xlabel('Iteration');
 ylabel('Recovery error');
 
 if para.progress
-    figure('NumberTitle', 'off', 'Name', 'TNNR-WRE progress');
+    figure('NumberTitle', 'off', 'Name', 'DW-TNNR progress');
     num_iter = min(tnnr_iteration);
     X_rec = X_rec / 255;
     for i = 1 : num_iter

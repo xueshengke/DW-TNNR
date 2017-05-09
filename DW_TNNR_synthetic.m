@@ -20,7 +20,6 @@ result_dir = './result/synthetic';
 if ~exist(result_dir, 'dir'),   mkdir(result_dir); end
 
 %% parameter configuration
-
 % para.block = 1;          % 1 for block occlusion, 0 for random noise
 para.lost = 0.50;        % percentage of lost elements in matrix
 para.save_eps = 0;       % save eps figure in result directory
@@ -54,7 +53,6 @@ fprintf('loss: %d%% elements are missing.\n', lost);
 rnd_idx = double(old_idx < (100-lost));
 mask = repmat(rnd_idx, [1 1 dim]); % index matrix of the known elements
 % missing = ones(size(mask)) - mask; % index matrix of the unknown elements
-
 
 L = rand(m, r);
 R = rand(n, r);
