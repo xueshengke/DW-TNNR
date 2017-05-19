@@ -1,9 +1,9 @@
 function [ W ] = weight_matrix( m, L, theta )
 %--------------------------------------------------------------------------
-% Xue Shengke, Zhejiang University, April 2017.
+% Shengke Xue, Zhejiang University, April 2017. 
 % Contact information: see readme.txt.
 %
-% Xue et al. (2017) DW-TNNR paper, IEEE Transactions on Information Theory.
+% Xue et al. (2017) DW-TNNR paper, IEEE Transactions on Image Processing.
 %--------------------------------------------------------------------------
 %     compute an inceasing weight matrix
 % 

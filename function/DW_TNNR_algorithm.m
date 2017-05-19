@@ -26,25 +26,18 @@ missing = ones(m,n) - known;  % index matrix of missing elements
 
 min_R    = para.min_R;        % minimum rank of chosen image
 max_R    = para.max_R;        % maximum rank of chosen image
-max_iter = para.max_iter;     % number of max iteration
+max_iter = para.max_iter;     % number of maximum iteration
 tol      = para.epsilon;      % tolerance
-alpha_0  = para.alpha;        % initial value of alpha
-rho      = para.rho; 
+alpha_1  = para.alpha;        % initial value of alpha
+rho      = para.rho;          
 
-% W1_inc = weight_matrix(m, para.L, para.theta1);  % weight in ascent order
-% W1_sort = weight_sort(known, W1_inc);            % weight sorted
-% W2_inc = weight_matrix(m, para.L, para.theta2);  % weight in ascent order
-% W2_sort = weight_sort(known, W2_inc);            % weight sorted
-
-[W1_row, W1_col] = weight_exp(known, para.theta1, para.theta2);
-% [W2_row, W2_col] = weight_exp(known, para.phi1, para.phi2);
-% [W2_r, W2_c] = weight_exp(known, para.theta2);
+[W_row, W_col] = weight_exp(known, para.theta1, para.theta2);
 
 Erec = zeros(max_R, 1);  % reconstruction error, best value in each rank
 Psnr = zeros(max_R, 1);  % PSNR, best value in each rank
-time_cost = zeros(max_R, 1);        % consuming time, each rank
+time_cost = zeros(max_R, 1);        % elapsed time, in each rank
 iter_cost = zeros(max_R, dim);      % number of iterations, each channel
-X_rec = zeros(m, n, dim, max_iter); % recovered image under the best rank
+X_rec = zeros(m, n, dim, max_iter); % recovered image at the best rank
 
 best_rank = 0;  % record the best value
 best_psnr = 0;
@@ -71,22 +64,15 @@ for R = min_R : max_R    % test if each rank is proper for completion
         M_fro = norm(M, 'fro');
         last_X = X;
         delta = inf;
-        alpha = alpha_0;
+        alpha = alpha_1;
         for i = 1 : max_iter
             fprintf('iter %d, ', i);
             [U, sigma, V] = svd(X);
             A = U'; B = V';
-%             C = U(:, 1:R)'; D = V(:, 1:R)'; 
-            T1 = U(:, R+1:m)'; T2 = V(:, R+1:m)';            
-
-            %             [m, n] = size(X);
-%             D_t = W1_r * T1 * T2'* W1_c;
-%             D_x = W1_r*A'*B*W1_c - W2_r*C'*D*W2_c;
-%             err = sum(D_t(:) - D_x(:));
+            T1 = U(:, R+1:m)'; T2 = V(:, R+1:m)';
             
-%             X = X - 1/alpha * W1_row * T1' * T2 * W1_col;
-            X = X - 1/alpha * W1_row * (para.eta * A' * B + T1' * T2) * W1_col;
-%             X = X - 1/alpha * (W1_row*A'*B*W1_col - W2_row*C'*D*W2_col);
+%             X = X - 1/alpha * W_row * T1' * T2 * W_col;
+            X = X - 1/alpha * W_row * (para.eta * A' * B + T1' * T2) * W_col;
             X = X .* missing + M .* known;
             
             X = max(X, 0);
@@ -117,6 +103,7 @@ for R = min_R : max_R    % test if each rank is proper for completion
         X_rec = X_iter;
     end
 end
+
 %% compute the reconstruction error and PSNR in each iteration 
 %  for the best rank
 num_iter = min(iter_cost(best_rank, :));
