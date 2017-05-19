@@ -1,10 +1,10 @@
-% Xue Shengke, Zhejiang University, April 2017. 
+% Shengke Xue, Zhejiang University, April 2017. 
 % Contact information: see readme.txt.
 %
 % Reference: 
-% Xue, S., Qiu, W., Liu, F., et al., (2017). Double Weighted Truncated Nuclear 
-% Norm Regularization for Efficient Matrix Completion. IEEE Transactions on 
-% Information Theory, submitted.
+% S. Xue, W. Qiu, F. Liu, et~al., “Double Weighted Truncated Nuclear 
+% Norm Regularization for Efficient Matrix Completion,” IEEE Transactions on 
+% Image Processing, submitted, 2017.
 
 % Partially composed of Hu et al. (2013) TNNR implementation, written by 
 % Dr. Debing Zhang, Zhejiang Universiy, November 2012.
@@ -15,13 +15,14 @@ addpath image ;
 addpath mask ;
 addpath function;
 
-%% read image files directory information
+%% read image directory information
 result_dir = './result/image';
 if ~exist(result_dir, 'dir'),   mkdir(result_dir); end
 image_list = {'re1.jpg', 're2.jpg', 're3.jpg', 're4.jpg', 're5.jpg', ...
               're6.jpg', 're7.jpg', 're8.jpg', 're9.jpg', 're10.jpg', ...
               're11.jpg' };
 
+%% read mask directory information
 file_list = dir('mask');
 num_mask = length(file_list) - 2;
 mask_list = cell(num_mask, 1);
@@ -30,26 +31,26 @@ for i = 1 : num_mask
 end
 
 %% parameter configuration
-image_id = 9;            % select an image for experiment
-mask_id  = 5;            % select a mask for experiment
+image_id = 6;            % select an image for experiment
+mask_id  = 12;           % select a mask for experiment
 
 para.block = 1;          % 1 for block occlusion, 0 for random noise
-para.lost = 0.50;        % percentage of lost elements in matrix
+para.lost = 0.40;        % ratio of lost elements in matrix
 para.save_eps = 1;       % save eps figure in result directory
 para.min_R = 1;          % minimum rank of chosen image
-para.max_R = 5;          % maximum rank of chosen image
+para.max_R = 20;         % maximum rank of chosen image
 % it requires to test all ranks from min_R to max_R, note that different
 % images have different ranks, and various masks affect the ranks, too.
 
 para.max_iter = 200;     % maximum number of iteration
-para.epsilon = 1e-4;     % tolerance of iteration
+para.epsilon = 1e-4;     % tolerance
 
-para.alpha = 5e-4;       % 1/apha, positive step size of gradient descent
-para.rho   = 1.15;       % rho > 1, scale up the value of alpha
-para.theta1 = 2.50;      % compute an increasing weight matrix, W1 >= W2
-para.theta2 = 2.50;      % if theta = 1, W = I, an indentity matrix
-% para.L     = 150;      % 1 <= L <= m, compute W
-para.progress = 0;
+para.alpha = 1e-4;       % 1/apha, positive step size of gradient descent
+para.rho   = 1.20;       % rho > 1, scale up the value of alpha
+para.theta1 = 4.00;      % compute the weight matrix, theta1 = theta2
+para.theta2 = 4.00;      % can obtain the best PSNR
+para.eta = 0.55;         % for best robustness
+para.progress = 0;       % show the recovered image in each iteration
 
 %% select an image and a mask for experiment
 image_name = image_list{image_id};
@@ -111,6 +112,7 @@ plot(tnnr_res.Erec_iter, '^-');
 xlabel('Iteration');
 ylabel('Recovery error');
 
+%% show the recovered image in each iteration
 if para.progress
     figure('NumberTitle', 'off', 'Name', 'DW-TNNR progress');
     num_iter = min(tnnr_iteration);
@@ -138,7 +140,7 @@ fprintf(fid, '%s\n', ['alpha: '           num2str(para.alpha)      ]);
 fprintf(fid, '%s\n', ['rho: '             num2str(para.rho)        ]);
 fprintf(fid, '%s\n', ['theta1: '          num2str(para.theta1)     ]);
 fprintf(fid, '%s\n', ['theta2: '          num2str(para.theta2)     ]);
-% fprintf(fid, '%s\n', ['L: '               num2str(para.L)          ]);
+fprintf(fid, '%s\n', ['eta: '             num2str(para.eta)        ]);
 
 fprintf(fid, '%s\n', ['rank: '            num2str(tnnr_rank)       ]);
 fprintf(fid, '%s\n', ['psnr: '            num2str(tnnr_psnr)       ]);
