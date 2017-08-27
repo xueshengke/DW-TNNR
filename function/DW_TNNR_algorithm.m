@@ -21,8 +21,8 @@
 
 X_miss = X_full .* mask;	  % incomplete image with some pixels lost
 [m, n, dim] = size(X_full);
-known = mask(:, :, 1);        % index matrix of known elements
-missing = ones(m,n) - known;  % index matrix of missing elements
+known = mask;        % index matrix of known elements
+missing = ones(size(mask)) - known;  % index matrix of missing elements
 
 min_R    = para.min_R;        % minimum rank of chosen image
 max_R    = para.max_R;        % maximum rank of chosen image
@@ -31,7 +31,11 @@ tol      = para.epsilon;      % tolerance
 alpha_1  = para.alpha;        % initial value of alpha
 rho      = para.rho;          
 
-[W_row, W_col] = weight_exp(known, para.theta1, para.theta2);
+W_row = zeros(m, m, dim);
+W_col = zeros(n, n, dim);
+for i = 1 : dim
+    [W_row(:,:,i), W_col(:,:,i)] = weight_exp(known(:,:,i), para.theta1, para.theta2);
+end
 
 Erec = zeros(max_R, 1);  % reconstruction error, best value in each rank
 Psnr = zeros(max_R, 1);  % PSNR, best value in each rank
@@ -72,8 +76,8 @@ for R = min_R : max_R    % test if each rank is proper for completion
             T1 = U(:, R+1:m)'; T2 = V(:, R+1:m)';
             
 %             X = X - 1/alpha * W_row * T1' * T2 * W_col;
-            X = X - 1/alpha * W_row * (para.eta * A' * B + T1' * T2) * W_col;
-            X = X .* missing + M .* known;
+            X = X - 1/alpha * W_row(:,:,c) * (para.eta * A' * B + T1' * T2) * W_col(:,:,c);
+            X = X .* missing(:,:,c) + M .* known(:,:,c);
             
             X = max(X, 0);
             X = min(X, 255);

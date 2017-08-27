@@ -3,7 +3,7 @@
 %
 % Reference: 
 % S. Xue, W. Qiu, F. Liu, et~al., “Double Weighted Truncated Nuclear 
-% Norm Regularization for Efficient Matrix Completion,” IEEE Transactions on 
+% Norm Regularization for Efficient Matrix Completion,?IEEE Transactions on 
 % Image Processing, submitted, 2017.
 
 % Partially composed of Hu et al. (2013) TNNR implementation, written by 
@@ -31,15 +31,15 @@ for i = 1 : num_mask
 end
 
 %% parameter configuration
-image_id = 6;            % select an image for experiment
+image_id = 2;            % select an image for experiment
 mask_id  = 12;           % select a mask for experiment
 
-para.block = 1;          % 1 for block occlusion, 0 for random noise
-para.lost = 0.40;        % ratio of lost elements in matrix
+para.block = 0;          % 1 for block occlusion, 0 for random noise
+para.lost = 0.60;        % ratio of lost elements in matrix
 para.save_eps = 1;       % save eps figure in result directory
 para.min_R = 1;          % minimum rank of chosen image
 para.max_R = 20;         % maximum rank of chosen image
-% it requires to test all ranks from min_R to max_R, note that different
+% it requires to test all ranks from min_R to max_R, note that different.
 % images have different ranks, and various masks affect the ranks, too.
 
 para.max_iter = 200;     % maximum number of iteration
@@ -47,8 +47,8 @@ para.epsilon = 1e-4;     % tolerance
 
 para.alpha = 1e-4;       % 1/apha, positive step size of gradient descent
 para.rho   = 1.20;       % rho > 1, scale up the value of alpha
-para.theta1 = 4.00;      % compute the weight matrix, theta1 = theta2
-para.theta2 = 4.00;      % can obtain the best PSNR
+para.theta1 = 2.00;      % compute the weight matrix, theta1 = theta2
+para.theta2 = 2.00;      % can obtain the best PSNR
 para.eta = 0.55;         % for best robustness
 para.progress = 0;       % show the recovered image in each iteration
 
@@ -65,12 +65,19 @@ if para.block
     fprintf('mask: %s.\n', mask_list{mask_id});
 else
     % random loss
-    rnd_idx = randi([0, 100-1], m, n);
+%     rnd_idx = randi([0, 100-1], m, n);
+%     old_idx = rnd_idx;
+%     lost = para.lost * 100;
+%     fprintf('loss: %d%% elements are missing.\n', lost);
+%     rnd_idx = double(old_idx < (100-lost));
+%     mask = repmat(rnd_idx, [1 1 dim]); % index matrix of the known elements
+
+    rnd_idx = randi([0, 100-1], m, n, dim);
     old_idx = rnd_idx;
     lost = para.lost * 100;
     fprintf('loss: %d%% elements are missing.\n', lost);
     rnd_idx = double(old_idx < (100-lost));
-    mask = repmat(rnd_idx, [1 1 dim]); % index matrix of the known elements
+    mask = rnd_idx; % index matrix of the known elements
 end
 
 %% Double Weighted Truncated Nuclear Norm Regularization
