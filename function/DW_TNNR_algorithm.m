@@ -21,7 +21,7 @@
 
 X_miss = X_full .* mask;	  % incomplete image with some pixels lost
 [m, n, dim] = size(X_full);
-known = mask;        % index matrix of known elements
+known = mask;                 % index matrix of known elements
 missing = ones(size(mask)) - known;  % index matrix of missing elements
 
 min_R    = para.min_R;        % minimum rank of chosen image
