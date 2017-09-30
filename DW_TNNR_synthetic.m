@@ -2,9 +2,8 @@
 % Contact information: see readme.txt.
 %
 % Reference: 
-% S. Xue, W. Qiu, F. Liu, et~al., “Double Weighted Truncated Nuclear 
-% Norm Regularization for Efficient Matrix Completion,” IEEE Transactions on 
-% Image Processing, submitted, 2017.
+% S. Xue, W. Qiu, F. Liu, et~al., Double Weighted Truncated Nuclear 
+% Norm Regularization for Efficient Matrix Completion, , submitted, 2017.
 
 % Partially composed of Hu et al. (2013) TNNR implementation, written by 
 % Dr. Debing Zhang, Zhejiang Universiy, November 2012.
