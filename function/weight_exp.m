@@ -24,14 +24,20 @@ col_known = transpose(sum(known, 1));
 
 % use the exponential function to compute the weight, the row (column)
 % with more observed elements is offered with a smaller value of weight
-w_r = exp( -theta1 * (row_known / n - 1) ) - 1;
-w_c = exp( -theta2 * (col_known / m - 1) ) - 1;
+% w_r = exp( -theta1 * (row_known / n - 1) ) - 1;
+% w_c = exp( -theta2 * (col_known / m - 1) ) - 1;
+
+w_r = - row_known / n + 2;
+w_c = - col_known / m + 2;
+
+w_r = theta1 * w_r / max(w_r);
+w_c = theta2 * w_c / max(w_c);
 
 if theta1 == 0
-    w_r = ones(size(w_r));
+    w_r = 1.0 * ones(size(w_r));
 end
 if theta2 == 0
-    w_c = ones(size(w_c));
+    w_c = 1.0 * ones(size(w_c));
 end
 
 W_row = diag(w_r);

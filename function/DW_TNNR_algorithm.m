@@ -71,7 +71,7 @@ for R = min_R : max_R    % test if each rank is proper for completion
         alpha = alpha_1;
         for i = 1 : max_iter
             fprintf('iter %d, ', i);
-            [U, sigma, V] = svd(X);
+            [U, sigma, V] = svd(X, 'econ');
             A = U'; B = V';
             T1 = U(:, R+1:m)'; T2 = V(:, R+1:m)';
             

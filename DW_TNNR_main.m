@@ -17,9 +17,11 @@ addpath function;
 %% read image directory information
 result_dir = './result/image';
 if ~exist(result_dir, 'dir'),   mkdir(result_dir); end
-image_list = {'re1.jpg', 're2.jpg', 're3.jpg', 're4.jpg', 're5.jpg', ...
-              're6.jpg', 're7.jpg', 're8.jpg', 're9.jpg', 're10.jpg', ...
-              're11.jpg' };
+% image_list = {'re1.jpg', 're2.jpg', 're3.jpg', 're4.jpg', 're5.jpg', ...
+%               're6.jpg', 're7.jpg', 're8.jpg', 're9.jpg', 're10.jpg', ...
+%               're11.jpg' };
+image_list = {'new1.jpg', 'new2.jpg', 'new3.jpg', 'new4.jpg', 'new5.jpg', ...
+              'new6.jpg', 'new7.jpg', 'new8.jpg', 'new9.jpg', 'new10.jpg' };      
 
 %% read mask directory information
 file_list = dir('mask');
@@ -30,11 +32,11 @@ for i = 1 : num_mask
 end
 
 %% parameter configuration
-image_id = 2;            % select an image for experiment
+image_id = 10;            % select an image for experiment
 mask_id  = 12;           % select a mask for experiment
 
-para.block = 0;          % 1 for block occlusion, 0 for random noise
-para.lost = 0.60;        % ratio of lost elements in matrix
+para.block = 1;          % 1 for block occlusion, 0 for random noise
+para.lost = 0.50;        % ratio of lost elements in matrix
 para.save_eps = 1;       % save eps figure in result directory
 para.min_R = 1;          % minimum rank of chosen image
 para.max_R = 20;         % maximum rank of chosen image
@@ -46,10 +48,10 @@ para.epsilon = 1e-4;     % tolerance
 
 para.alpha = 1e-4;       % 1/apha, positive step size of gradient descent
 para.rho   = 1.20;       % rho > 1, scale up the value of alpha
-para.theta1 = 2.00;      % compute the weight matrix, theta1 = theta2
-para.theta2 = 2.00;      % can obtain the best PSNR
-para.eta = 0.55;         % for best robustness
-para.progress = 0;       % show the recovered image in each iteration
+para.theta1 = 1.25;    % compute the weight matrix, theta1 = theta2
+para.theta2 = 1.25;    % can obtain the best PSNR
+para.eta = 0.00;         % for best robustness
+para.progress = 1;       % show the recovered image in each iteration
 
 %% select an image and a mask for experiment
 image_name = image_list{image_id};
