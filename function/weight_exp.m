@@ -3,7 +3,7 @@ function [ W_row, W_col ] = weight_exp(known, theta1, theta2)
 % Shengke Xue, Zhejiang University, April 2017. 
 % Contact information: see readme.txt.
 %
-% Xue et al. (2017) DW-TNNR paper, IEEE Transactions on Image Processing.
+% Xue et al. (2017) DW-TNNR paper
 %--------------------------------------------------------------------------
 %     compute weight matrices using exponential function, rows with more 
 %     observed elements are given smaller weights

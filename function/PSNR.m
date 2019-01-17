@@ -3,7 +3,7 @@ function [ erec, psnr ] = PSNR( X_full, X_rec, missing )
 % Shengke Xue, Zhejiang University, April 2017. 
 % Contact information: see readme.txt.
 %
-% Xue et al. (2017) DW-TNNR paper, IEEE Transactions on Image Processing.
+% Xue et al. (2017) DW-TNNR paper
 %--------------------------------------------------------------------------
 %     compute PSNR and reconstruction error for the recovered image and
 %     original image

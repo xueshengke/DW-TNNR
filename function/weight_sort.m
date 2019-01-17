@@ -3,7 +3,7 @@ function [ W_sort ] = weight_sort( known, W_inc )
 % Shengke Xue, Zhejiang University, April 2017. 
 % Contact information: see readme.txt.
 %
-% Xue et al. (2017) DW-TNNR paper, IEEE Transactions on Image Processing.
+% Xue et al. (2017) DW-TNNR paper
 %--------------------------------------------------------------------------
 %     compute an sorted weight matrix according to known elements, rows 
 %     with more observed elements are given smaller weights

@@ -3,7 +3,7 @@
 %
 % Reference: 
 % S. Xue, W. Qiu, F. Liu, et~al., Double Weighted Truncated Nuclear 
-% Norm Regularization for Low-Rank Matrix Completion, , submitted, 2017.
+% Norm Regularization for Low-Rank Matrix Completion, arXiv preprint, 2019, arXiv:1901.01711.
 
 % Partially composed of Hu et al. (2013) TNNR implementation, written by 
 % Dr. Debing Zhang, Zhejiang Universiy, November 2012.
